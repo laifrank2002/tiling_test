@@ -1,0 +1,23 @@
+<DOCTYPE! html>
+<html>
+<head>
+	
+</head>
+</body>
+	<div>
+		<canvas id="canvas" width="500" height="500" style="border:1px solid #d3d3d3;" onclick="isometric_renderer.getMouseClick(event)">
+			Your browser does not support the canvas element.
+		</canvas>
+		<div id="console" style="display:inline-block">
+		
+		</div>
+	</div>
+	
+	<script src="engine.js"></script>
+	<script src="tile_detector.js"></script>
+	<script src="isometric_renderer.js"></script>
+	<script>
+		engine.initialize();
+	</script>
+</body>
+</html>
