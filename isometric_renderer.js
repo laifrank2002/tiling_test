@@ -17,7 +17,7 @@ var isometric_renderer = (
 		var map;
 		
 		var offset_x = 50;
-		var offset_y = 50;
+		var offset_y = 200;
 		return {
 			
 			draw: function()
@@ -26,20 +26,38 @@ var isometric_renderer = (
 			},
 			
 			// draws a simple canvas map for debugging
-			draw_simple: function()
+			draw_isometric_map: function()
 			{
 				engine.log("Drawing simple map...");
 				context.moveTo(offset_x,offset_y);
 				
 				// draw a giant map
-				for (let x = 0; x < 1; x++)
+				for (let y = 0; y < 20; y++)
 				{
-					for (let y = 0; y < 2; y++)
+					for (let x = 0; x < 20; x++)
 					{
-						isometric_renderer.draw_tile(x,y);
+						context.beginPath();
+						context.moveTo(offset_x+(20*x)-(10*x)+(10*y)
+							,offset_y+(5*y)+(-5*x));
+						context.lineTo(offset_x+10+(20*x)-(10*x)+(10*y)
+							,offset_y+5+(5*y)+(-5*x));
+						context.lineTo(offset_x+20+(20*x)-(10*x)+(10*y)
+							,offset_y+(5*y)+(-5*x));
+						context.lineTo(offset_x+10+(20*x)-(10*x)+(10*y)
+							,offset_y-5+(5*y)+(-5*x));
+						/*
+						context.lineTo(offset_x+(20*x)-(10*x)+(10*y)
+							,offset_y+(5*y)+(-5*x));
+						*/
+						context.closePath();
+						context.stroke();
+						context.fillStyle="#22ff22";
+						context.fill();
+
 					}
 				}
 				
+				//context.stroke();
 			},
 			// draws a square 2d based map for debugging and transforms
 			draw_square_map: function()
@@ -90,6 +108,11 @@ var isometric_renderer = (
 			},
 			
 			// tile checker
+			getTile: function(point)
+			{
+				
+			},
+			
 			
 			// FOR TESTING PURPOSES
 			getTileCartesian: function (point)
@@ -108,14 +131,6 @@ var isometric_renderer = (
 				
 			},
 			
-			
-			// mouse event
-			getMouseClick: function (event)
-			{
-				//engine.log("Mouse clicked at: [" + event.offsetX + "," + event.offsetY + "]");
-				isometric_renderer.getTileCartesian(new Point(event.offsetX,event.offsetY));
-			},
-			
 			//
 			
 			set_map: function(map)
@@ -126,7 +141,7 @@ var isometric_renderer = (
 			initialize: function()
 			{
 				engine.log("Initializing isometric renderer...");
-				isometric_renderer.draw_square_map();
+				isometric_renderer.draw_isometric_map();
 			},
 		};
 	}
