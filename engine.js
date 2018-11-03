@@ -27,5 +27,6 @@ var engine = {
 	{
 		engine.log("Initializing...");
 		isometric_renderer.initialize();
+		key_handler.initialize();
 	},
 };
