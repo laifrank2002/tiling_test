@@ -9,7 +9,7 @@ var engine = {
 		}
 	},
 	
-	post: function(message)
+	notify: function(message)
 	{
 		var message_panel = document.getElementById("console");
 		
