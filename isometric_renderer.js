@@ -8,12 +8,12 @@
 var isometric_renderer = (
 	function()
 	{
-		var DEF_TILE_SIZE = 12;
+		var DEF_TILE_SIZE = 16;
 		var DEF_TILE_OFFSET = 1; // space between tiles - not implemented
 		var DEF_TILE_STRETCH_FACTOR = 2; // stretching the tile bfo tiles - not implemented 
 		
-		var DEF_MAP_HEIGHT = 12;
-		var DEF_MAP_WIDTH = 25;
+		var DEF_MAP_HEIGHT = 10;
+		var DEF_MAP_WIDTH = 15;
 		
 		var canvas = document.getElementById("canvas");
 		var context = canvas.getContext("2d");
@@ -24,6 +24,8 @@ var isometric_renderer = (
 		
 		var tile_offset_x = 0;
 		var tile_offset_y = 0;
+		
+		var map_orientation = 0;
 		
 		return {
 			
@@ -39,16 +41,83 @@ var isometric_renderer = (
 				isometric_renderer.clear();
 				// draws the isometric map from the current map
 				
-				// draw tiles and lines 
-				for (let y = 0; y < DEF_MAP_HEIGHT + 0; y++)
+				engine.log(map_orientation);
+				// handling in rotation
+				let new_offset_x = offset_x;
+				let new_offset_y = offset_y;
+				
+				let new_tile_offset_x = tile_offset_x;
+				let new_tile_offset_y = tile_offset_y;
+				
+				let map_height = DEF_MAP_HEIGHT;
+				let map_width = DEF_MAP_WIDTH;
+				
+				switch(map_orientation)
 				{
-					for (let x = 0; x < DEF_MAP_WIDTH + 0; x++)
+					case 1:						
+						map_height = DEF_MAP_WIDTH;
+						map_width = DEF_MAP_HEIGHT;
+						new_tile_offset_x = map_height - tile_offset_y - 1;
+						new_tile_offset_y = tile_offset_x;
+						break;
+					case 2:
+						new_tile_offset_x = map_width - tile_offset_x - 1;
+						new_tile_offset_y = map_height - tile_offset_y - 1;
+						break;
+					case 3:
+						map_height = DEF_MAP_WIDTH;
+						map_width = DEF_MAP_HEIGHT;
+						new_tile_offset_x = tile_offset_y;
+						new_tile_offset_y = map_width - tile_offset_x - 1;
+						break;
+					default:
+						
+						// do nothing
+				} // end switch
+				
+				
+				// default render
+				// draw the bloody border so I can see where it bloody is!
+				context.strokeStyle = "rgba(211, 211, 211, 1)";
+				context.lineWidth = 3;
+				
+				context.beginPath();
+				context.moveTo(new_offset_x, new_offset_y);
+				context.lineTo(new_offset_x+map_width*DEF_TILE_SIZE
+					,new_offset_y+map_width*DEF_TILE_SIZE*0.5);
+				context.lineTo(new_offset_x+(DEF_TILE_SIZE*(map_height+map_width))
+					,new_offset_y+0.5*DEF_TILE_SIZE*(map_width-map_height));
+				context.lineTo(new_offset_x+(map_height)*DEF_TILE_SIZE
+					,new_offset_y-((map_height)*DEF_TILE_SIZE*0.5));
+				context.closePath();
+				context.stroke();
+				
+				// reset for def
+				// line styling
+				context.lineWidth = 1;
+				context.strokeStyle = "rgba(222, 222, 222, 1)";
+				
+				switch(map_orientation)
+				{
+					case 1:						
+						
+						break;
+					case 2:
+						// do nothing 
+						break;
+					case 3:
+						break;
+					default:
+						
+						// do nothing
+				} // end switch
+				
+				// draw tiles and lines 
+				for (let y = 0; y < map_height + 0; y++)
+				{
+					for (let x = 0; x < map_width + 0; x++)
 					{
 						// technical debt in reorganizing, STILL NEED TO ADD IN BFO
-						
-						// line styling
-						
-						context.strokeStyle = "rgba(211, 211, 211, 1)";
 						
 						// lines
 						context.beginPath();
@@ -68,7 +137,29 @@ var isometric_renderer = (
 						context.closePath();
 						context.stroke();
 						// get tile type and draw
-						switch(current_map.get_tile((x+tile_offset_x),(y+tile_offset_y)))
+						// get based on x/y for particular orientation
+						// this is the hard part!
+						// .get_tile((x+tile_offset_x),(y+tile_offset_y))
+						let new_x = x;
+						let new_y = y;
+						switch(map_orientation)
+						{
+							case 1:
+								new_x = map_height - y - 1;
+								new_y = x;
+								break;
+							case 2:
+								new_x = map_width - x - 1;
+								new_y = map_height - y - 1;
+								break;
+							case 3:
+								new_x = y;
+								new_y = map_width - x - 1;
+								break;
+							default:
+							
+						}
+						switch(current_map.get_tile((new_x+tile_offset_x),(new_y+tile_offset_y)))
 						{
 							case "0":
 								//engine.log("tile pos: " + (x+tile_offset_x) + "," + (y+tile_offset_y) + " tile:" + current_map.get_tile(x+tile_offset_x,y+tile_offset_y));
@@ -86,26 +177,10 @@ var isometric_renderer = (
 								context.fill();
 						}
 						
-
+						// render all the images and other cool objects! 
+						
 					} // end x
 				} // end y
-				
-				// draw the bloody border so I can see where it bloody is!
-				context.strokeStyle = "rgba(211, 211, 211, 1)";
-				context.lineWidth = 2;
-				
-				context.beginPath();
-				context.moveTo(offset_x, offset_y);
-				
-				// TESTING DEBUG VALUES ONLY
-				context.lineTo(offset_x+DEF_MAP_WIDTH*DEF_TILE_SIZE
-					,offset_y+DEF_MAP_WIDTH*DEF_TILE_SIZE*0.5);
-				context.lineTo(offset_x+(DEF_TILE_SIZE*(DEF_MAP_HEIGHT+DEF_MAP_WIDTH))
-					,offset_y+0.5*DEF_TILE_SIZE*(DEF_MAP_WIDTH-DEF_MAP_HEIGHT));
-				context.lineTo(offset_x+(DEF_MAP_HEIGHT)*DEF_TILE_SIZE
-					,offset_y-((DEF_MAP_HEIGHT)*DEF_TILE_SIZE*0.5));
-				context.closePath();
-				context.stroke();
 			},
 			
 			/*
@@ -182,6 +257,31 @@ var isometric_renderer = (
 				*/
 			},
 			
+			rotate_clockwise: function()
+			{
+				if (map_orientation >= 3)
+				{
+					map_orientation = 0;
+				}
+				else
+				{
+					map_orientation = map_orientation + 1;
+				}
+				isometric_renderer.draw();
+			},
+			
+			rotate_counterclockwise: function()
+			{
+				if (map_orientation <= 0)
+				{
+					map_orientation = 3;
+				}
+				else
+				{
+					map_orientation = map_orientation - 1;
+				}
+				isometric_renderer.draw();
+			},
 			// converters
 			
 			/*
@@ -270,9 +370,10 @@ var isometric_renderer = (
 	}
 )();
 
+var tiles = image_loader.get_images();
+
 function Point(x,y)
 {
 	this.x = x;
 	this.y = y;
 }
-

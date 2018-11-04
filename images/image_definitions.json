@@ -1,0 +1,19 @@
+{
+	"image": 
+	[
+		{
+			"name":"test1",
+			"path":"images/test1.png",
+			"offset_x": 0,
+			"offset_y": 0,
+			"z-index": 0
+		},
+		{
+			"name":"test2",
+			"path":"images/test2.png",
+			"offset_x": 0,
+			"offset_y": -16,
+			"z-index": 0
+		}
+	]
+}
