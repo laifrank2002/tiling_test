@@ -26,7 +26,10 @@ var engine = {
 	initialize: function()
 	{
 		engine.log("Initializing...");
+		image_loader.initialize();
+		
 		isometric_renderer.initialize();
+		
 		key_handler.initialize();
 		
 		isometric_renderer.rotate_clockwise();

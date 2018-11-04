@@ -32,16 +32,21 @@ var isometric_renderer = (
 			initialize: function()
 			{
 				engine.log("Initializing isometric renderer...");
+				// test
 				current_map = new Map("0,0,0,1,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1",10,4);
+				current_map.set_map_object(2,2,new map_object(image_loader.get_images()["test1"],map_objects["test1"]));
+				current_map.set_map_object(0,0,new map_object(image_loader.get_images()["test1"],map_objects["test1_test"]));
+				current_map.set_map_object(1,1,new map_object(image_loader.get_images()["test2"],map_objects["test2"]));
+				
+				// initial cycle so wouldn't be blank
 				isometric_renderer.draw();
+				
 			},
 			
 			draw: function()
 			{
 				isometric_renderer.clear();
 				// draws the isometric map from the current map
-				
-				engine.log(map_orientation);
 				// handling in rotation
 				let new_offset_x = offset_x;
 				let new_offset_y = offset_y;
@@ -177,7 +182,21 @@ var isometric_renderer = (
 								context.fill();
 						}
 						
-						// render all the images and other cool objects! 
+						try
+						{ // ONLY TEMPORARY SOLUTIONS!
+							context.drawImage(current_map.get_map_object((new_x+tile_offset_x),(new_y+tile_offset_y))["image"]["image"]
+								,offset_x+(DEF_TILE_SIZE*2*y)-(DEF_TILE_SIZE*y)+(DEF_TILE_SIZE*x) + current_map.get_map_object((new_x+tile_offset_x),(new_y+tile_offset_y))["image"]["offset_x"]
+								,offset_y+(DEF_TILE_SIZE*x/2)+(DEF_TILE_SIZE*y/-2) +(DEF_TILE_SIZE/-2) + current_map.get_map_object((new_x+tile_offset_x),(new_y+tile_offset_y))["image"]["offset_y"]);
+						}
+						catch{}
+					} // end x
+				} // end y
+				
+				// render all the images and other cool objects! 
+				for (let y = 0; y < map_height + 0; y++)
+				{
+					for (let x = 0; x < map_width + 0; x++)
+					{
 						
 					} // end x
 				} // end y
@@ -359,7 +378,7 @@ var isometric_renderer = (
 			
 			set_map: function(map)
 			{
-				this.map = map;
+				this.current_map = map;
 			},
 			
 			clear: function()

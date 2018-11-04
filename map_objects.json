@@ -1,0 +1,34 @@
+{
+	"test1":
+	{
+		"image_name": "test1",
+		"properties": 
+		{
+			"health": 100,
+			"attack": 1,
+			"defense": 2
+		}
+	},
+	
+	"test1_test":
+	{
+		"image_name": "test1",
+		"properties":
+		{
+			"health": 100,
+			"attack": 2,
+			"defense": 10
+		}
+	},
+	
+	"test2":
+	{
+		"image_name": "test2",
+		"properties":
+		{
+			"health": 500,
+			"attack": 1,
+			"defense": 15
+		}
+	}
+}

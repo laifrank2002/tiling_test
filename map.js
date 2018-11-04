@@ -1,5 +1,6 @@
 // simple map, taken from Wandering 
-function Map(string, width, height) {
+function Map(string, width, height) 
+{
 
     string = string.split("\n").join(""); //removes line breaks
 
@@ -9,10 +10,6 @@ function Map(string, width, height) {
 
     this.special_tiles = []; //for special tiles
     this.map_objects = [];
-
-    this.player_x = null;
-    this.player_y = null;
-    this.player_orientation = null;
 
     for (var i = 0; i < width * height; i = i + 1) {
         this.special_tiles[i] = null; //start out with no special tiles, for now.
@@ -36,22 +33,22 @@ Map.prototype.get_tile = function(width, height) {
 
 //sets a tile in the map. permanently.
 Map.prototype.set_tile = function(width, height, new_tile) {
-    var tile_pos = this.get_tile_pos(width, height);
+    var tile_pos = this.get_tile_position(width, height);
     this.map_array[tile_pos] = new_tile;
 };
 
 // map objects 
 Map.prototype.set_map_object = function(width, height, new_map_object) {
-    var map_object_pos = this.get_tile_pos(width, height);
+    var map_object_pos = this.get_tile_position(width, height);
     this.map_objects[map_object_pos] = new_map_object;
 };
 
 Map.prototype.get_map_object = function(width, height) {
-    var map_object_pos = this.get_tile_pos(width, height);
+    var map_object_pos = this.get_tile_position(width, height);
     return this.map_objects[map_object_pos];
 };
 
 Map.prototype.remove_map_object = function(width, height) {
-    var map_object_pos = this.get_tile_pos(width, height);
+    var map_object_pos = this.get_tile_position(width, height);
     this.map_objects[map_object_pos] = null; //set it to null
 };
